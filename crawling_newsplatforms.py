@@ -10,8 +10,8 @@ REST_URL='&sm=tab_pge&sort=1&photo=0&field=0&reporter_article=&pd=0&ds=&de=&doci
 
 # get 기사의 뉴스 플랫폼
 def get_newsplatforms_from_news_title(page_start_num,page_end_num, URL):
-    with open('data/[year]/newsplatforms[year].txt', 'w') as filewriter:
-        newsplatforms_list = []
+    with open('data/[year]/newsplatforms[year].txt', 'w',encoding='utf8') as filewriter:
+        newsplatform_list = []
         for i in range(page_start_num-1,page_end_num):
             # 페이지 번호 = 이전 페이지 수 * 페이지 당 기사수 + 1
             current_page_num = i*10+1
@@ -27,13 +27,13 @@ def get_newsplatforms_from_news_title(page_start_num,page_end_num, URL):
             
 # count 뉴스 플랫폼 수
 def count_newsplatform():
-    with open('data/[year]/newsplatform[year].txt', 'r') as filereader:
+    with open('data/[year]/newsplatforms[year].txt', 'r',encoding='utf8') as filereader:
         newsplatform_list=filereader.readline().split(',')
         sr = pd.Series(Counter(newsplatform_list))
         # 내림차순으로 정렬
         # inplace=True : same as sr = sr.sort_values(ascending=False)
         sr.sort_values(inplace=True, ascending=False)
-        sr.to_csv('data/[year]/newsplatform[year]_count.csv')
+        sr.to_csv('data/[year]/newsplatforms[year]_count.csv')
  
 def main():
     # 검색 단어
@@ -50,7 +50,7 @@ def main():
     # URL 합성
     TARGET_URL = BASE_URL + KEYWORD_URL+ quote(keyword)+REST_URL
     # get 기사의 뉴스 플랫폼
-    get_newsplatforms_from_news_title(page_start_num, page_end_num, target_URL)
+    get_newsplatforms_from_news_title(page_start_num, page_end_num, TARGET_URL)
     # count 뉴스 플랫폼 수
     count_newsplatform()
  
